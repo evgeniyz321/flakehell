@@ -142,13 +142,21 @@ def get_exceptions(
         if '*' in path_rule:
             continue
         if path.startswith(path_rule):
-            aggregated_rules.update(rules)
+            for plugin_name, exception_list in rules.items():
+                if plugin_name in aggregated_rules:
+                    aggregated_rules[plugin_name].extend(exception_list)
+                else:
+                    aggregated_rules[plugin_name] = exception_list
 
     # glob
     for path_rule, rules in exceptions:
         if '*' not in path_rule:
             continue
         if fnmatch(filename=path, patterns=[path_rule]):
-            aggregated_rules.update(rules)
+            for plugin_name, exception_list in rules.items():
+                if plugin_name in aggregated_rules:
+                    aggregated_rules[plugin_name].extend(exception_list)
+                else:
+                    aggregated_rules[plugin_name] = exception_list
 
     return aggregated_rules
