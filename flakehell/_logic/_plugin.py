@@ -1,11 +1,11 @@
 # built-in
 import re
+from collections import defaultdict
 from pathlib import Path
 from typing import Any, Dict, List, Tuple, Union
 
 # external
 from flake8.utils import fnmatch
-
 
 REX_NAME = re.compile(r'[-_.]+')
 ALIASES = {
@@ -135,7 +135,7 @@ def get_exceptions(
         reverse=True,
     )
 
-    aggregated_rules = dict()
+    aggregated_rules = defaultdict(list)
 
     # prefix
     for path_rule, rules in exceptions:
@@ -143,10 +143,7 @@ def get_exceptions(
             continue
         if path.startswith(path_rule):
             for plugin_name, exception_list in rules.items():
-                if plugin_name in aggregated_rules:
-                    aggregated_rules[plugin_name].extend(exception_list)
-                else:
-                    aggregated_rules[plugin_name] = exception_list
+                aggregated_rules[plugin_name].extend(exception_list)
 
     # glob
     for path_rule, rules in exceptions:
@@ -154,9 +151,6 @@ def get_exceptions(
             continue
         if fnmatch(filename=path, patterns=[path_rule]):
             for plugin_name, exception_list in rules.items():
-                if plugin_name in aggregated_rules:
-                    aggregated_rules[plugin_name].extend(exception_list)
-                else:
-                    aggregated_rules[plugin_name] = exception_list
+                aggregated_rules[plugin_name].extend(exception_list)
 
     return aggregated_rules
