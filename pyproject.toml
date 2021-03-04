@@ -59,6 +59,7 @@ import_heading_localfolder = "app"
 # -- FLIT -- #
 
 [tool.flit.metadata]
+dist-name="ezflakehell"
 module="flakehell"
 author="Gram (@orsinium)"
 author-email="master_fess@mail.ru"
