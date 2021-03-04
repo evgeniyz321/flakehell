@@ -8,3 +8,5 @@ docs/build/
 .mypy_cache/
 .pytest_cache/
 .flake8
+venv/
+.idea/
